@@ -1,0 +1,49 @@
+name: Build and Release
+
+on:
+  push:
+    paths:
+      - 'version.json'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build
+        run: dotnet build HomeworkGate.sln -c Release --nologo
+
+      - name: Copy Guardian next to App
+        run: |
+          copy "HomeworkGate.Guardian\bin\x64\Release\net8.0-windows\win-x64\HomeworkGate.Guardian.exe" `
+               "HomeworkGate.App\bin\x64\Release\net8.0-windows\"
+
+      - name: Read version
+        id: ver
+        run: |
+          $v = (Get-Content version.json | ConvertFrom-Json).version
+          echo "VERSION=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Zip release
+        run: |
+          Compress-Archive `
+            -Path "HomeworkGate.App\bin\x64\Release\net8.0-windows\*" `
+            -DestinationPath "HomeworkGate.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.VERSION }}
+          name: HomeworkGate v${{ steps.ver.outputs.VERSION }}
+          body_path: version.json
+          files: HomeworkGate.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

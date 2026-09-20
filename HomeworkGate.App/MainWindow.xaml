@@ -1,0 +1,429 @@
+<Window x:Class="HomeworkGate.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:HomeworkGate.App"
+        Title="HomeworkGate" Height="720" Width="1100"
+        MinHeight="600" MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BrBgDeep}">
+
+    <Window.Resources>
+        <local:HwStatusToColorConverter x:Key="StatusToColor"/>
+        <local:HwStatusToTextConverter  x:Key="StatusToText"/>
+        <local:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <local:InverseBoolToVisibilityConverter x:Key="InvBoolToVis"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- SIDEBAR -->
+        <Border Grid.Column="0" Background="{StaticResource BrBgPanel}"
+                BorderBrush="{StaticResource BrBorder}" BorderThickness="0,0,1,0">
+            <DockPanel>
+                <!-- App Header -->
+                <StackPanel DockPanel.Dock="Top" Margin="20,24,20,20">
+                    <TextBlock Text="Homework" FontFamily="Segoe UI" FontSize="18"
+                               FontWeight="Bold" Foreground="{StaticResource BrTextPrimary}"/>
+                    <TextBlock Text="Gate" FontFamily="Segoe UI" FontSize="18"
+                               FontWeight="Bold" Foreground="{StaticResource BrAccentGreen}"
+                               Margin="0,-4,0,0"/>
+                    <Border Height="1" Background="{StaticResource BrBorder}" Margin="0,12,0,0"/>
+                </StackPanel>
+
+                <!-- Lock Status -->
+                <Border DockPanel.Dock="Top" Margin="12,0,12,8" CornerRadius="8" Padding="12,10"
+                        Background="#1E2535">
+                    <StackPanel>
+                        <TextBlock x:Name="LockStatusIcon" Text="🔒" FontSize="20"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="LockStatusText"
+                                   Text="Приложения заблокированы"
+                                   FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrAccentRed}"
+                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Guardian Service Status -->
+                <Border DockPanel.Dock="Top" Margin="12,0,12,16" CornerRadius="6" Padding="10,7"
+                        Background="#141920">
+                    <DockPanel>
+                        <Ellipse x:Name="GuardianDot" Width="8" Height="8" DockPanel.Dock="Left"
+                                 Fill="{StaticResource BrAccentGreen}" Margin="0,0,7,0"
+                                 VerticalAlignment="Center"/>
+                        <TextBlock x:Name="GuardianText" FontFamily="Segoe UI" FontSize="10"
+                                   Foreground="{StaticResource BrTextSecondary}"
+                                   Text="Защита активна" VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- Navigation -->
+                <StackPanel DockPanel.Dock="Top" Margin="12,0">
+                    <Button Content="📋  Задания" Style="{StaticResource BtnBase}"
+                            Click="NavTasks_Click" HorizontalContentAlignment="Left"
+                            Padding="12,10" Margin="0,2"/>
+                    <Button Content="🎮  Блокировки" Style="{StaticResource BtnBase}"
+                            Click="NavApps_Click" HorizontalContentAlignment="Left"
+                            Padding="12,10" Margin="0,2"/>
+                    <Button Content="⚙️  Настройки" Style="{StaticResource BtnBase}"
+                            Click="NavSettings_Click" HorizontalContentAlignment="Left"
+                            Padding="12,10" Margin="0,2"/>
+                </StackPanel>
+
+                <!-- Summary at bottom -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="12,0,12,16">
+                    <Border Height="1" Background="{StaticResource BrBorder}" Margin="0,0,0,12"/>
+                    <TextBlock x:Name="TaskSummary" Text="0 заданий • 0 выполнено"
+                               FontFamily="Segoe UI" FontSize="11"
+                               Foreground="{StaticResource BrTextSecondary}"
+                               TextAlignment="Center" TextWrapping="Wrap"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- MAIN CONTENT -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ═══ UPDATE BANNER ═══ -->
+            <Border x:Name="UpdateBanner" Grid.Row="0"
+                    Background="#1A2F1A" BorderBrush="#39D98A" BorderThickness="0,0,0,1"
+                    Padding="16,10" Visibility="Collapsed">
+                <DockPanel>
+                    <Button x:Name="UpdateDismissBtn" DockPanel.Dock="Right"
+                            Content="✕" Background="Transparent" BorderThickness="0"
+                            Foreground="#7A86A1" FontSize="14" Cursor="Hand"
+                            Click="UpdateDismiss_Click" Padding="8,0" Margin="8,0,0,0"/>
+                    <Button x:Name="UpdateDownloadBtn" DockPanel.Dock="Right"
+                            Content="⬇ Скачать" Background="#39D98A" BorderThickness="0"
+                            Foreground="#0F1117" FontFamily="Segoe UI" FontSize="12"
+                            FontWeight="SemiBold" Padding="14,6" Cursor="Hand"
+                            Click="UpdateDownload_Click"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="UpdateTitle"
+                                   Text="🔔 Доступно обновление"
+                                   FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="#39D98A"/>
+                        <TextBlock x:Name="UpdateNotes"
+                                   FontFamily="Segoe UI" FontSize="11"
+                                   Foreground="#A8C5A8" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- ═══ PAGES CONTAINER ═══ -->
+            <Grid Grid.Row="1">
+
+            <!-- ═══ TASKS PAGE ═══ -->
+            <Grid x:Name="PageTasks" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="{StaticResource BrBgPanel}"
+                        BorderBrush="{StaticResource BrBorder}" BorderThickness="0,0,0,1"
+                        Padding="24,16">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="+ Новое задание"
+                                Style="{StaticResource BtnGreen}" Click="AddTask_Click"/>
+                        <TextBlock Text="Задания" FontFamily="Segoe UI"
+                                   FontSize="20" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrTextPrimary}"
+                                   VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" Padding="24,16">
+                    <StackPanel>
+                        <Border x:Name="EmptyTasksPlaceholder" Visibility="Collapsed"
+                                Background="{StaticResource BrBgCard}" CornerRadius="12"
+                                Padding="40" Margin="0,40,0,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="📚" FontSize="48" TextAlignment="Center"/>
+                                <TextBlock Text="Нет активных заданий"
+                                           FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold"
+                                           Foreground="{StaticResource BrTextPrimary}"
+                                           TextAlignment="Center" Margin="0,12,0,4"/>
+                                <TextBlock Text="Добавь задание, чтобы начать контролировать время в играх"
+                                           FontFamily="Segoe UI" FontSize="13"
+                                           Foreground="{StaticResource BrTextSecondary}"
+                                           TextAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <ItemsControl x:Name="TaskList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource BrBgCard}"
+                                            CornerRadius="10" Margin="0,0,0,10" Padding="16">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Status bar -->
+                                            <Border Grid.Column="0" Width="4" CornerRadius="2"
+                                                    Margin="0,0,14,0"
+                                                    Background="{Binding Status, Converter={StaticResource StatusToColor}}"/>
+
+                                            <!-- Info -->
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <DockPanel>
+                                                    <TextBlock DockPanel.Dock="Right"
+                                                               Text="{Binding Status, Converter={StaticResource StatusToText}}"
+                                                               FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold"
+                                                               Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
+                                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                    <TextBlock Text="{Binding Title}" FontFamily="Segoe UI"
+                                                               FontSize="14" FontWeight="SemiBold"
+                                                               Foreground="{StaticResource BrTextPrimary}"/>
+                                                </DockPanel>
+                                                <TextBlock Text="{Binding Description}" FontFamily="Segoe UI"
+                                                           FontSize="12" Foreground="{StaticResource BrTextSecondary}"
+                                                           TextWrapping="Wrap" Margin="0,4,0,4" MaxHeight="40"/>
+                                                <TextBlock FontFamily="Segoe UI" FontSize="11"
+                                                           Foreground="{StaticResource BrTextSecondary}">
+                                                    <Run Text="Попыток: "/>
+                                                    <Run Text="{Binding AttemptCount}"/>
+                                                    <Run Text=" • "/>
+                                                    <Run Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding LastFeedback}"
+                                                           FontFamily="Segoe UI" FontSize="11"
+                                                           Foreground="{StaticResource BrAccentYellow}"
+                                                           TextWrapping="Wrap" Margin="0,4,0,0" MaxHeight="36"
+                                                           Visibility="{Binding LastFeedback, Converter={StaticResource BoolToVis}}"/>
+                                            </StackPanel>
+
+                                            <!-- Actions -->
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal"
+                                                        VerticalAlignment="Center" Margin="12,0,0,0">
+                                                <Button Content="Отправить решение"
+                                                        Style="{StaticResource BtnBlue}"
+                                                        Tag="{Binding Id}"
+                                                        Click="SubmitSolution_Click"
+                                                        Padding="10,6" FontSize="12" Margin="0,0,6,0"/>
+                                                <Button Content="✕" Style="{StaticResource BtnRed}"
+                                                        Tag="{Binding Id}" Click="DeleteTask_Click"
+                                                        Padding="8,6" FontSize="12"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- ═══ APPS PAGE ═══ -->
+            <Grid x:Name="PageApps" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="{StaticResource BrBgPanel}"
+                        BorderBrush="{StaticResource BrBorder}" BorderThickness="0,0,0,1"
+                        Padding="24,16">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="+ Добавить приложение"
+                                Style="{StaticResource BtnGreen}" Click="AddApp_Click"/>
+                        <TextBlock Text="Блокируемые приложения" FontFamily="Segoe UI"
+                                   FontSize="20" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrTextPrimary}"
+                                   VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" Padding="24,16">
+                    <StackPanel>
+                        <Border Background="{StaticResource BrBgCard}" CornerRadius="8"
+                                Padding="14,10" Margin="0,0,0,16">
+                            <TextBlock FontFamily="Segoe UI" FontSize="12"
+                                       Foreground="{StaticResource BrTextSecondary}" TextWrapping="Wrap">
+                                <Run Text="⚡ "/>
+                                <Run Text="Эти приложения закрываются каждые 2 секунды через Guardian Service (не обойти через Диспетчер задач), пока есть невыполненные задания."/>
+                            </TextBlock>
+                        </Border>
+
+                        <Border x:Name="EmptyAppsPlaceholder" Visibility="Collapsed"
+                                Background="{StaticResource BrBgCard}" CornerRadius="12"
+                                Padding="40" Margin="0,20,0,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="🎮" FontSize="48" TextAlignment="Center"/>
+                                <TextBlock Text="Нет блокируемых приложений"
+                                           FontFamily="Segoe UI" FontSize="16" FontWeight="SemiBold"
+                                           Foreground="{StaticResource BrTextPrimary}"
+                                           TextAlignment="Center" Margin="0,12,0,4"/>
+                                <TextBlock Text="Добавь игры или приложения, которые нужно заблокировать"
+                                           FontFamily="Segoe UI" FontSize="12"
+                                           Foreground="{StaticResource BrTextSecondary}"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <ItemsControl x:Name="AppList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource BrBgCard}"
+                                            CornerRadius="8" Margin="0,0,0,8" Padding="14,12">
+                                        <DockPanel>
+                                            <Button DockPanel.Dock="Right" Content="Удалить"
+                                                    Style="{StaticResource BtnRed}"
+                                                    Tag="{Binding Id}" Click="RemoveApp_Click"
+                                                    Padding="10,5" FontSize="12"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DisplayName}"
+                                                           FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold"
+                                                           Foreground="{StaticResource BrTextPrimary}"/>
+                                                <TextBlock Text="{Binding ExecutablePath}"
+                                                           FontFamily="Consolas" FontSize="11"
+                                                           Foreground="{StaticResource BrTextSecondary}"
+                                                           Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- ═══ SETTINGS PAGE ═══ -->
+            <Grid x:Name="PageSettings" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="{StaticResource BrBgPanel}"
+                        BorderBrush="{StaticResource BrBorder}" BorderThickness="0,0,0,1"
+                        Padding="24,16">
+                    <TextBlock Text="Настройки" FontFamily="Segoe UI"
+                               FontSize="20" FontWeight="SemiBold"
+                               Foreground="{StaticResource BrTextPrimary}"/>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" Padding="24,20">
+                    <StackPanel MaxWidth="560" HorizontalAlignment="Left">
+
+                        <!-- API Key -->
+                        <TextBlock Text="Anthropic API ключ" FontFamily="Segoe UI"
+                                   FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrTextPrimary}" Margin="0,0,0,6"/>
+                        <TextBlock FontFamily="Segoe UI" FontSize="12"
+                                   Foreground="{StaticResource BrTextSecondary}"
+                                   Margin="0,0,0,8" TextWrapping="Wrap">
+                            <Run Text="Получи ключ на "/>
+                            <Hyperlink NavigateUri="https://console.anthropic.com" RequestNavigate="Hyperlink_Navigate">
+                                <Run Text="console.anthropic.com"/>
+                            </Hyperlink>
+                            <Run Text=" — нужен для проверки заданий AI."/>
+                        </TextBlock>
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="ApiKeyInput" Style="{StaticResource InputStyle}"
+                                     Grid.Column="0" Margin="0,0,8,0" FontFamily="Consolas"/>
+                            <Button Grid.Column="1" Content="Сохранить"
+                                    Style="{StaticResource BtnGreen}"
+                                    Click="SaveApiKey_Click" Padding="16,8"/>
+                        </Grid>
+
+                        <!-- Autostart -->
+                        <TextBlock Text="Автозапуск" FontFamily="Segoe UI"
+                                   FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrTextPrimary}" Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BrBgCard}" CornerRadius="8"
+                                Padding="14,12" Margin="0,0,0,24">
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" x:Name="BtnAutostart"
+                                        Style="{StaticResource BtnGhost}"
+                                        Content="Включить" Click="ToggleAutostart_Click"
+                                        Padding="12,6"/>
+                                <StackPanel>
+                                    <TextBlock Text="Запускать при старте Windows"
+                                               FontFamily="Segoe UI" FontSize="13"
+                                               Foreground="{StaticResource BrTextPrimary}"/>
+                                    <TextBlock Text="Блокировка будет активна сразу после входа"
+                                               FontFamily="Segoe UI" FontSize="11"
+                                               Foreground="{StaticResource BrTextSecondary}"
+                                               Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- Guardian Service Status -->
+                        <TextBlock Text="Guardian Service" FontFamily="Segoe UI"
+                                   FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrTextPrimary}" Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BrBgCard}" CornerRadius="8"
+                                Padding="14,12" Margin="0,0,0,24">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,8">
+                                    <TextBlock x:Name="ServiceStatusText"
+                                               DockPanel.Dock="Right"
+                                               FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{StaticResource BrAccentYellow}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="Статус защитного сервиса"
+                                               FontFamily="Segoe UI" FontSize="13"
+                                               Foreground="{StaticResource BrTextPrimary}"/>
+                                </DockPanel>
+                                <TextBlock FontFamily="Segoe UI" FontSize="11"
+                                           Foreground="{StaticResource BrTextSecondary}"
+                                           TextWrapping="Wrap" Margin="0,0,0,10">
+                                    Guardian Service запускается с системными привилегиями.
+                                    Его нельзя убить через Диспетчер задач. Установка выполняется
+                                    автоматически при первом запуске приложения.
+                                </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Установить / Запустить сервис"
+                                            Style="{StaticResource BtnGreen}"
+                                            Click="InstallGuardian_Click" Padding="12,7"
+                                            Margin="0,0,8,0"/>
+                                    <Button Content="Остановить сервис"
+                                            Style="{StaticResource BtnGhost}"
+                                            Click="UninstallGuardian_Click" Padding="12,7"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- About -->
+                        <TextBlock Text="О приложении" FontFamily="Segoe UI"
+                                   FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrTextPrimary}" Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BrBgCard}" CornerRadius="8" Padding="14,12">
+                            <StackPanel>
+                                <TextBlock Text="HomeworkGate v2.0"
+                                           FontFamily="Segoe UI" FontSize="13"
+                                           Foreground="{StaticResource BrTextPrimary}"/>
+                                <TextBlock FontFamily="Segoe UI" FontSize="12"
+                                           Foreground="{StaticResource BrTextSecondary}"
+                                           TextWrapping="Wrap" Margin="0,4,0,0">
+                                    Блокировщик приложений с AI-проверкой заданий и защитным Windows Service.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            </Grid> <!-- end PAGES CONTAINER -->
+        </Grid>
+    </Grid>
+</Window>

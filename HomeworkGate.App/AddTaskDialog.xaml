@@ -1,0 +1,81 @@
+<Window x:Class="HomeworkGate.App.AddTaskDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Новое задание" Height="400" Width="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{StaticResource BrBgDeep}">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Новое задание" FontFamily="Segoe UI"
+                   FontSize="18" FontWeight="SemiBold"
+                   Foreground="{StaticResource BrTextPrimary}" Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,14">
+            <TextBlock Text="Название задания" Style="{StaticResource LabelStyle}"/>
+            <Grid>
+                <TextBox x:Name="TitleInput" Style="{StaticResource InputStyle}"/>
+                <TextBlock Text="Например: Реши 10 задач по алгебре"
+                           Foreground="{StaticResource BrTextSecondary}"
+                           FontFamily="Segoe UI" FontSize="13"
+                           Margin="8,0,0,0" VerticalAlignment="Center"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=TitleInput}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,14">
+            <TextBlock Text="Условие задания (что именно нужно сделать)" Style="{StaticResource LabelStyle}"/>
+            <Grid>
+                <TextBox x:Name="DescInput" Style="{StaticResource InputStyle}"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         Height="120" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock Text="Опиши задание подробно — AI будет проверять решение по этому условию"
+                           Foreground="{StaticResource BrTextSecondary}"
+                           FontFamily="Segoe UI" FontSize="13"
+                           Margin="8,6,0,0" VerticalAlignment="Top"
+                           TextWrapping="Wrap"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=DescInput}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+
+        <CheckBox Grid.Row="3" x:Name="IsMandatoryCheck" IsChecked="True"
+                  Content="Обязательное (блокирует игры)" Margin="0,0,0,20"
+                  Foreground="{StaticResource BrTextPrimary}" FontFamily="Segoe UI"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Отмена" Style="{StaticResource BtnGhost}"
+                    Click="Cancel_Click" Padding="16,8" Margin="0,0,8,0"/>
+            <Button Content="Создать задание" Style="{StaticResource BtnGreen}"
+                    Click="Create_Click" Padding="16,8"/>
+        </StackPanel>
+    </Grid>
+</Window>

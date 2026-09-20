@@ -1,0 +1,113 @@
+<Window x:Class="HomeworkGate.App.SubmitSolutionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Отправить решение" Height="580" Width="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BrBgDeep}">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Отправить решение" FontFamily="Segoe UI"
+                       FontSize="18" FontWeight="SemiBold"
+                       Foreground="{StaticResource BrTextPrimary}"/>
+            <TextBlock x:Name="TaskTitleLabel" FontFamily="Segoe UI" FontSize="12"
+                       Foreground="{StaticResource BrTextSecondary}" Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <!-- Task description card -->
+        <Border Grid.Row="1" Background="{StaticResource BrBgCard}" CornerRadius="8"
+                Padding="14,10" Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="Условие задания:" Style="{StaticResource LabelStyle}"/>
+                <TextBlock x:Name="TaskDescLabel" FontFamily="Segoe UI" FontSize="12"
+                           Foreground="{StaticResource BrTextPrimary}"
+                           TextWrapping="Wrap" MaxHeight="80"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Text answer -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,14">
+            <TextBlock Text="Твоё решение (текст)" Style="{StaticResource LabelStyle}"/>
+            <Grid>
+                <TextBox x:Name="AnswerInput" Style="{StaticResource InputStyle}"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         Height="120" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock Text="Опиши своё решение подробно..."
+                           Foreground="{StaticResource BrTextSecondary}"
+                           FontFamily="Segoe UI" FontSize="13"
+                           Margin="8,6,0,0" VerticalAlignment="Top"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=AnswerInput}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+
+        <!-- Attachments -->
+        <Grid Grid.Row="3" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Images -->
+            <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                <TextBlock Text="Изображения / фото" Style="{StaticResource LabelStyle}"/>
+                <Button Content="📷 Добавить фото" Style="{StaticResource BtnGhost}"
+                        Click="AddImage_Click" Padding="10,7"/>
+                <ListBox x:Name="ImageList" Background="{StaticResource BrBgDeep}"
+                         BorderBrush="{StaticResource BrBorder}" BorderThickness="1"
+                         Foreground="{StaticResource BrTextSecondary}"
+                         FontFamily="Segoe UI" FontSize="11"
+                         Height="70" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Files -->
+            <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                <TextBlock Text="Файлы с решением" Style="{StaticResource LabelStyle}"/>
+                <Button Content="📎 Прикрепить файл" Style="{StaticResource BtnGhost}"
+                        Click="AddFile_Click" Padding="10,7"/>
+                <ListBox x:Name="FileList" Background="{StaticResource BrBgDeep}"
+                         BorderBrush="{StaticResource BrBorder}" BorderThickness="1"
+                         Foreground="{StaticResource BrTextSecondary}"
+                         FontFamily="Segoe UI" FontSize="11"
+                         Height="70" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- AI notice -->
+        <Border Grid.Row="4" Background="{StaticResource BrBgCard}" CornerRadius="8"
+                Padding="12,8" Margin="0,0,0,16">
+            <TextBlock FontFamily="Segoe UI" FontSize="11"
+                       Foreground="{StaticResource BrTextSecondary}" TextWrapping="Wrap">
+                <Run Text="🤖 "/>
+                <Run Text="AI проверит решение по условию задания. Будь честен — напиши настоящее решение."/>
+            </TextBlock>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Отмена" Style="{StaticResource BtnGhost}"
+                    Click="Cancel_Click" Padding="16,8" Margin="0,0,8,0"/>
+            <Button Content="✅ Отправить на проверку" Style="{StaticResource BtnGreen}"
+                    Click="Submit_Click" Padding="16,8"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,13 @@
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\bin\x64\Release\net8.0-windows\HomeworkGate.Shared.deps.json
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\bin\x64\Release\net8.0-windows\HomeworkGate.Shared.dll
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\bin\x64\Release\net8.0-windows\HomeworkGate.Shared.pdb
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.csproj.AssemblyReference.cache
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.AssemblyInfoInputs.cache
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.AssemblyInfo.cs
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.dll
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\refint\HomeworkGate.Shared.dll
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\HomeworkGate.Shared.pdb
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\ref\HomeworkGate.Shared.dll
+C:\Users\Dmitry\Desktop\HomeworkGate\HomeworkGate.Shared\obj\x64\Release\net8.0-windows\Homework.F01C3889.Up2Date

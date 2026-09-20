@@ -1,0 +1,159 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Guardian\\HomeworkGate.Guardian.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Guardian\\HomeworkGate.Guardian.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Guardian\\HomeworkGate.Guardian.csproj",
+        "projectName": "HomeworkGate.Guardian",
+        "projectPath": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Guardian\\HomeworkGate.Guardian.csproj",
+        "packagesPath": "C:\\Users\\Dmitry\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Guardian\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Dmitry\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows": {
+            "framework": "net8.0-windows7.0",
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Shared\\HomeworkGate.Shared.csproj": {
+                "projectPath": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Shared\\HomeworkGate.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "11.0.100"
+      },
+      "frameworks": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting.WindowsServices": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\11.0.100-rc.1.26425.128/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Shared\\HomeworkGate.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Shared\\HomeworkGate.Shared.csproj",
+        "projectName": "HomeworkGate.Shared",
+        "projectPath": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Shared\\HomeworkGate.Shared.csproj",
+        "packagesPath": "C:\\Users\\Dmitry\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Dmitry\\Desktop\\HomeworkGate\\HomeworkGate.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Dmitry\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows": {
+            "framework": "net8.0-windows7.0",
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "11.0.100"
+      },
+      "frameworks": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\11.0.100-rc.1.26425.128/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
